@@ -7,32 +7,40 @@ from sklearn.preprocessing import LabelEncoder
 # Set page config with logo and title
 st.set_page_config(page_title="Lead Scoring - IT Vedant", page_icon="logo.jpeg", layout="wide")
 
-# Set theme colors and background logo
+# Set modern dark theme with gradient depth effect
 st.markdown(
     f"""
     <style>
-        :root {{
-            --primary-color: #2E7D32;
-            --secondary-color: #757575;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+        * {{
+            font-family: 'Inter', sans-serif;
+        }}
+        body {{
+            background: linear-gradient(145deg, #1e1e1e, #121212);
+            color: #e0e0e0;
+        }}
+        .stApp {{
+            background: linear-gradient(145deg, #1e1e1e, #121212);
+            color: #e0e0e0;
         }}
         .stButton>button {{
-            background-color: var(--primary-color);
+            background: linear-gradient(145deg, #2E7D32, #1B5E20);
             color: white;
             border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
         }}
-        .stSuccess {{ color: var(--primary-color); }}
-        .stError {{ color: red; }}
-        body {{
-            background-color: #F1F8E9;
+        .stButton>button:hover {{
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.8);
+            transform: translateY(-2px);
         }}
-        body::before {{
-            content: "";
-            background: url('logo.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            opacity: 0.1;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+        .card {{
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            margin: 10px 0;
         }}
     </style>
     """,
@@ -103,19 +111,25 @@ if page == "Input Data":
     col1, col2 = st.columns(2)
     with col1:
         for i, col in enumerate(selected_features[:len(selected_features)//2]):
-            if col in categorical_columns:
-                options = label_encoders[col].classes_.tolist()
-                inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
-            else:
-                inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
+            with st.container():
+                st.markdown("<div class='card'>", unsafe_allow_html=True)
+                if col in categorical_columns:
+                    options = label_encoders[col].classes_.tolist()
+                    inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
+                else:
+                    inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
+                st.markdown("</div>", unsafe_allow_html=True)
 
     with col2:
         for i, col in enumerate(selected_features[len(selected_features)//2:]):
-            if col in categorical_columns:
-                options = label_encoders[col].classes_.tolist()
-                inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
-            else:
-                inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
+            with st.container():
+                st.markdown("<div class='card'>", unsafe_allow_html=True)
+                if col in categorical_columns:
+                    options = label_encoders[col].classes_.tolist()
+                    inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
+                else:
+                    inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
+                st.markdown("</div>", unsafe_allow_html=True)
 
     if st.button('💾 Save Inputs', use_container_width=True):
         if None in inputs.values():
