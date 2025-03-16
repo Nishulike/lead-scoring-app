@@ -132,6 +132,8 @@ elif page == "Predict Lead Score":
     try:
         features = pd.read_csv('user_inputs.csv')
         prediction = model.predict(features)[0]
+        probability = model.predict_proba(features)[0][1]
         st.success(f'🎉 Predicted Lead Score: {prediction}')
+        st.info(f'📊 Probability of Conversion: {probability:.2%}')
     except Exception as e:
         st.error(f"Error: {e}")
