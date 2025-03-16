@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 # Set page config with logo and title
 st.set_page_config(page_title="Lead Scoring - IT Vedant", page_icon="logo.jpeg", layout="wide")
 
-# Set modern dark theme with gradient depth effect
+# Set modern dark theme with gradient depth effect and 3D background
 st.markdown(
     f"""
     <style>
@@ -16,11 +16,11 @@ st.markdown(
             font-family: 'Inter', sans-serif;
         }}
         body {{
-            background: linear-gradient(145deg, #1e1e1e, #121212);
+            background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
             color: #e0e0e0;
         }}
         .stApp {{
-            background: linear-gradient(145deg, #1e1e1e, #121212);
+            background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
             color: #e0e0e0;
         }}
         .stButton>button {{
@@ -41,6 +41,31 @@ st.markdown(
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
             margin: 10px 0;
+        }}
+        /* 3D Background Elements */
+        body::before {{
+            content: "";
+            position: fixed;
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(46, 125, 50, 0.4), rgba(0, 0, 0, 0));
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: -1;
+        }}
+        body::after {{
+            content: "";
+            position: fixed;
+            bottom: 10%;
+            right: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(33, 150, 243, 0.4), rgba(0, 0, 0, 0));
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: -1;
         }}
     </style>
     """,
@@ -145,16 +170,7 @@ elif page == "Predict Lead Score":
 
     try:
         features = pd.read_csv('user_inputs.csv')
-        for col, le in label_encoders.items():
-            if col in features.columns:
-                features[col] = le.transform(features[col].astype(str))
-
-        if st.button('⚡ Predict Lead Score', use_container_width=True):
-            with st.spinner('Predicting...'):
-                prediction = model.predict(features)[0]
-                st.success(f'🎉 The predicted lead score is: {prediction:.2f}')
-    except FileNotFoundError:
-        st.error("❌ No inputs found. Please fill the inputs on the 'Input Data' page first.")
-
-st.sidebar.write("### How to run the app:")
-st.sidebar.code("streamlit run lead_scoring_app.py")
+        prediction = model.predict(features)[0]
+        st.success(f'🎉 Predicted Lead Score: {prediction}')
+    except Exception as e:
+        st.error(f"Error: {e}")
