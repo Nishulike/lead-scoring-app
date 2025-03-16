@@ -122,6 +122,8 @@ if page == "Input Data":
             st.error("⚠️ Please fill in all fields before saving.")
         else:
             input_df = pd.DataFrame([inputs])
+            for col in categorical_columns:
+                input_df[col] = label_encoders[col].transform(input_df[col].astype(str))
             input_df.to_csv('user_inputs.csv', index=False)
             st.success("✅ Inputs saved successfully! Go to the 'Predict Lead Score' page.")
 
