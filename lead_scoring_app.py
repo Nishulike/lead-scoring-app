@@ -34,39 +34,6 @@ st.markdown(
             box-shadow: 0 4px 15px rgba(46, 125, 50, 0.8);
             transform: translateY(-2px);
         }}
-        .card {{
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            margin: 10px 0;
-        }}
-        /* 3D Background Elements */
-        body::before {{
-            content: "";
-            position: fixed;
-            top: 10%;
-            left: 5%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(46, 125, 50, 0.4), rgba(0, 0, 0, 0));
-            border-radius: 50%;
-            filter: blur(90px);
-            z-index: -1;
-        }}
-        body::after {{
-            content: "";
-            position: fixed;
-            bottom: 10%;
-            right: 5%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(33, 150, 243, 0.4), rgba(0, 0, 0, 0));
-            border-radius: 50%;
-            filter: blur(90px);
-            z-index: -1;
-        }}
     </style>
     """,
     unsafe_allow_html=True
@@ -136,25 +103,19 @@ if page == "Input Data":
     col1, col2 = st.columns(2)
     with col1:
         for i, col in enumerate(selected_features[:len(selected_features)//2]):
-            with st.container():
-                st.markdown("<div class='card'>", unsafe_allow_html=True)
-                if col in categorical_columns:
-                    options = label_encoders[col].classes_.tolist()
-                    inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
-                else:
-                    inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
-                st.markdown("</div>", unsafe_allow_html=True)
+            if col in categorical_columns:
+                options = label_encoders[col].classes_.tolist()
+                inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
+            else:
+                inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
 
     with col2:
         for i, col in enumerate(selected_features[len(selected_features)//2:]):
-            with st.container():
-                st.markdown("<div class='card'>", unsafe_allow_html=True)
-                if col in categorical_columns:
-                    options = label_encoders[col].classes_.tolist()
-                    inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
-                else:
-                    inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
-                st.markdown("</div>", unsafe_allow_html=True)
+            if col in categorical_columns:
+                options = label_encoders[col].classes_.tolist()
+                inputs[col] = st.selectbox(f'{col}', options, index=None, placeholder=f"Select {col}")
+            else:
+                inputs[col] = st.number_input(f'{col}', min_value=0.0, step=0.1, format="%.2f")
 
     if st.button('💾 Save Inputs', use_container_width=True):
         if None in inputs.values():
