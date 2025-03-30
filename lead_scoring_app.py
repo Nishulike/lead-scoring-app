@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 # Set page config with logo and title
 st.set_page_config(page_title="Lead Scoring - IT Vedant", page_icon="logo.jpeg", layout="wide")
 
-# Set modern dark theme with gradient depth effect and 3D background
+# Set modern dark theme with improved select box text color
 st.markdown(
     f"""
     <style>
@@ -34,6 +34,10 @@ st.markdown(
             box-shadow: 0 4px 15px rgba(46, 125, 50, 0.8);
             transform: translateY(-2px);
         }}
+        /* Change the text color of select boxes to white */
+        div[data-baseweb="select"] * {{
+            color: white !important;
+        }}
     </style>
     """,
     unsafe_allow_html=True
@@ -44,7 +48,7 @@ st.image("logo.jpeg", width=100)
 st.title('Lead Scoring - IT Vedant')
 st.write('Decode your dreams')
 
-# Load dataset and print columns for debugging
+# Load dataset
 data = pd.read_csv('Lead Scoring.csv')
 st.sidebar.write("### IT Vedant Training Institute")
 st.sidebar.write("Dataset Loaded Successfully!")
